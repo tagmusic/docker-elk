@@ -1,6 +1,42 @@
 version: '2'
 
 services:
+
+  elasticsearch-master:
+    build:
+      context: ./
+    volumes:
+      - ./config/elasticsearch.yml:/usr/share/elasticsearch/config/elasticsearch.yml:ro
+    ports:
+      - "9200:9200"
+      - "9300:9300"
+    environment:
+      ES_JAVA_OPTS: "-Xmx8g -Xms8g"
+      node.master: "true"
+      node.data: "false"
+      node.name: ${HOSTNAME}
+      network.publish_host: ${HOSTNAME} #elastic-2
+      network.host: _site_
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+      nofile:
+        soft: 65536
+        hard: 65536
+    extra_hosts:
+      - "elastic-master.gsgr:172.31.2.52"
+      - "elastic-1.gsgr:172.31.11.4"
+      - "elastic-2.gsgr:172.31.1.136"
+      - "elastic-3.gsgr:172.31.0.62"
+      - "elastic-4.gsgr:172.31.28.150"
+      - "elastic-5.gsgr:172.31.17.175"
+      - "elastic-6.gsgr:172.31.5.216"
+      - "elastic-7.gsgr:172.31.7.172"
+      - "elastic-8.gsgr:172.31.13.255"
+    networks:
+      - elk
+      
   elasticsearch:
     build:
       context: ./
