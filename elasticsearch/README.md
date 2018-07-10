@@ -13,3 +13,12 @@ sudo reboot
 ```
 sudo sysctl -w vm.max_map_count=262144
 ```
+
+- *launch es*
+```
+#master
+docker-compose up -d elasticsearch-master
+
+#es node
+docker-compose up -d elasticsearch
+```
