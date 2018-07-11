@@ -37,7 +37,7 @@ services:
     networks:
       - elk
       
-  elasticsearch:
+  elasticsearch-node:
     build:
       context: ./
     volumes:
@@ -75,7 +75,29 @@ services:
     networks:
       - elk
     #before lunch sudo sysctl -w vm.max_map_count=262144
-
+    
+  # stand alone node
+  elasticsearch:
+    build:
+      context: ./
+    volumes:
+      - ./config/elasticsearch.yml:/usr/share/elasticsearch/config/elasticsearch.yml:ro
+      - elastic-data:/usr/share/elasticsearch/data
+    ports:
+      - "9200:9200"
+      - "9300:9300"
+    environment:
+      ES_JAVA_OPTS: "-Xmx8g -Xms8g"
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+      nofile:
+        soft: 65536
+        hard: 65536
+    networks:
+      - elk
+      
 volumes:
   elastic-data:
     driver: local
