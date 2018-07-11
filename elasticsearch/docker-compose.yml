@@ -57,7 +57,7 @@ services:
         soft: 65536
         hard: 65536
     extra_hosts:
-      - "elastic-master.gsgr:172.31.2.52"
+      - "elastic-master.gsgr:172.31.11.1"
     networks:
       - elk
     #before lunch sudo sysctl -w vm.max_map_count=262144
